@@ -12,7 +12,7 @@ mkdir -p $PINGFOLDER
 
 #curl $TXTINFO_URL > $NEIGHS
 wget -q -O $NEIGHS $TXTINFO_URL 
-NOW=`date +"%Y-%m-%d %H:%H"`
+NOW=`date +"%Y-%m-%d %H:%M"`
 
 tail -n $MAX_LINES $PINGFILE > $PINGFILE_BAK
 mv $PINGFILE_BAK $PINGFILE
