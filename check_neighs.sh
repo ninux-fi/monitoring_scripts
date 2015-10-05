@@ -23,8 +23,11 @@ for link in $LINKS; do
  echo $link
  SIP=`echo $link |  cut -f 1`
  DIP=`echo $link |  cut -f 2`
- echo -n "$NOW $SIP $DIP" >> $PINGFILE;
- ping -c $PINGS -q $DIP | grep "max" | cut -d= -f 2 | sed "s/\// /g" | sed "s/ms//g" >> $PINGFILE
+ $PINGRES=`ping -c $PINGS -q $DIP | grep "max" | cut -d= -f 2 | sed "s/\// /g" | sed "s/ms//g"` 
+ if [ $? -ne 0 ]; then
+    echo -n "$NOW $SIP $DIP" >> $PINGFILE;
+    echo $PINGRES >> $PINGFILE;
+ fi
 done;
 IFS=$' '
 
