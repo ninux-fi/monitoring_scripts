@@ -2,7 +2,7 @@
 
 NEIGHS=/tmp/neighs.txt
 PINGS=10
-PINGFOLDER=/var/www/html/ping
+PINGFOLDER=/www/ping
 PINGFILE=$PINGFOLDER/ping.csv
 PINGFILE_BAK=/tmp/ping.csv.bak
 TXTINFO_URL="http://localhost:2006/links"
