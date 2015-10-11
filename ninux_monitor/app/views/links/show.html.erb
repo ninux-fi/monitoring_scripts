@@ -1,7 +1,10 @@
-<h1>Links#show</h1>
-<p>Find me in app/views/links/show.html.erb</p>
+<h1>Link <%= "#{@data[0].ip_sorg} -> #{@data[0].ip_dest}"%></h1>
 
 <canvas id="canvas" width="960" height="500"></canvas>
+
+<div id="nav_links">
+  <%= link_to 'indietro', links_url() %>
+</div>
 
 <script type="text/javascript">
 jQuery( function() {
@@ -14,6 +17,7 @@ jQuery( function() {
         labels : graph_data.labels,
         datasets : [
           {
+            label: 'ping max',
             fillColor : "rgba(220,220,220,0.5)",
             strokeColor : "rgba(220,220,220,1)",
             pointColor : "rgba(220,220,220,1)",
@@ -21,6 +25,7 @@ jQuery( function() {
             data : graph_data.max
           },
           {
+            label: 'ping avg',
             fillColor : "rgba(151,187,205,0.5)",
             strokeColor : "rgba(151,187,205,1)",
             pointColor : "rgba(151,187,205,1)",
@@ -28,6 +33,7 @@ jQuery( function() {
             data : graph_data.avg
           },
           {
+            label: 'ping min',
             fillColor : "rgba(10,220,220,0.5)",
             strokeColor : "rgba(10,220,220,1)",
             pointColor : "rgba(10,220,220,1)",
@@ -37,7 +43,20 @@ jQuery( function() {
         ]
       };
 
-      myNewChart = new Chart($("#canvas").get(0).getContext("2d")).Line(data);
+      myNewChart = new Chart($("#canvas").get(0).getContext("2d")).Line(data, {
+        multiTooltipTemplate: "<%%= datasetLabel %> - <%%= value %>",
+        // Boolean - Whether to show labels on the scale
+        scaleShowLabels: true,
+
+        // Interpolated JS string - can access value
+        scaleLabel: "<%%=value%> ms",
+
+        // Boolean - Whether the scale should stick to integers, not floats even if drawing space is there
+        scaleIntegersOnly: true,
+
+        // Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+        scaleBeginAtZero: true
+      });
     });
 });
 </script>
