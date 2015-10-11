@@ -1,0 +1,6 @@
+<h1>Links</h1>
+<ul>
+<%- @links.each do |link, cnt| %>
+<li><%= link[0] %> -> <%= link[1] %>  -- <%= cnt %> rilevazioni - <%= link_to 'grafico', graph_links_url(source: link[0], destination: link[1]) %></li>
+<% end %>
+</ul>

@@ -1,0 +1,43 @@
+<h1>Links#show</h1>
+<p>Find me in app/views/links/show.html.erb</p>
+
+<canvas id="canvas" width="960" height="500"></canvas>
+
+<script type="text/javascript">
+jQuery( function() {
+  jQuery.get("<%=  graph_links_url(source: @data[0].ip_sorg, destination: @data[0].ip_dest, format: :json)%>",
+    function(graph_data) {
+      console.log("successful");
+      console.log(graph_data);
+
+      data = {
+        labels : graph_data.labels,
+        datasets : [
+          {
+            fillColor : "rgba(220,220,220,0.5)",
+            strokeColor : "rgba(220,220,220,1)",
+            pointColor : "rgba(220,220,220,1)",
+            pointStrokeColor : "#fff",
+            data : graph_data.max
+          },
+          {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            pointColor : "rgba(151,187,205,1)",
+            pointStrokeColor : "#fff",
+            data : graph_data.avg
+          },
+          {
+            fillColor : "rgba(10,220,220,0.5)",
+            strokeColor : "rgba(10,220,220,1)",
+            pointColor : "rgba(10,220,220,1)",
+            pointStrokeColor : "#fff",
+            data : graph_data.min
+          }
+        ]
+      };
+
+      myNewChart = new Chart($("#canvas").get(0).getContext("2d")).Line(data);
+    });
+});
+</script>
