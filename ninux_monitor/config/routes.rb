@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'dns/reverse'
+  get 'dns/query'
+
+
   IPV4_REGEXP = /\d{1,3}\.\d{1,3}.\d{1,3}.\d{1,3}/
   resources :links, only: [:index] do
     collection do
