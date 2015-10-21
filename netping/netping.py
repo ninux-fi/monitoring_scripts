@@ -776,6 +776,8 @@ while 1:
 			nuovi_nodi = ping_db.estrai_record("nodi","*","ID > %s" %id_max) # Estrae  i nodi nuovi
 			ping_db.closeDB()
 			for s in nuovi_nodi:
+				if s["ID"] > id_max :
+					id_max=s["ID"]
 				tutti_nodi.append(NODO(s,log))
 				log.event_log("[%s] Aggiunto nodo %s@%s" %(time.strftime("%c"),s["nome"],s["ip"]))
 				log.event_log("[%s] %s %s %s %s %s %d\n" %(time.strftime("%c"),s["nome"],s["ip"],s["contattomail"]," - ","attivo = ",s["attivo"]))
