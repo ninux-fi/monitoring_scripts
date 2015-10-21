@@ -1,9 +1,0 @@
-0000000000000000000000000000000000000000 f818613812902dd3ac54c3e11af4fe6501a6a052 root <root@muletto> 1411999552 +0200	commit (initial): Versione test 0.9.0
-f818613812902dd3ac54c3e11af4fe6501a6a052 f818613812902dd3ac54c3e11af4fe6501a6a052 root <root@muletto> 1412076689 +0200	checkout: moving from master to master
-f818613812902dd3ac54c3e11af4fe6501a6a052 92dab96eaef61172a9013fde83125092951399f3 root <root@muletto> 1412085160 +0200	commit: correzione di alcuni bugs
-92dab96eaef61172a9013fde83125092951399f3 c1a3c8c1828a9e0c682bb92e6a7f5fb3b78dc09c root <root@muletto> 1412085196 +0200	pull: Merge made by the 'recursive' strategy.
-c1a3c8c1828a9e0c682bb92e6a7f5fb3b78dc09c 708b75dfd6f5f4ccc215ae904cf1e3b05b121dc3 root <root@muletto> 1412289391 +0200	pull: Fast-forward
-708b75dfd6f5f4ccc215ae904cf1e3b05b121dc3 0df669146ef5330d805c3fdd1002078050b711ab root <root@muletto> 1412289679 +0200	commit: Revisone per piccoli aggiustamenti
-0df669146ef5330d805c3fdd1002078050b711ab f135622059cb4ffd2467be1749233f76816f890a root <root@muletto> 1414770193 +0100	commit: Aggiunto invio report giornaliero
-f135622059cb4ffd2467be1749233f76816f890a 0a00ef09e642ee378800d0b1e2491813ac6a1938 root <root@muletto> 1414874210 +0100	commit: Modifiche alla creazione del Data Base
-0a00ef09e642ee378800d0b1e2491813ac6a1938 0d4876f4cfa52730825027345a92915b266bfbec root <root@muletto> 1414874263 +0100	pull: Merge made by the 'recursive' strategy.
