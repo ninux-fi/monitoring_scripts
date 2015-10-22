@@ -1,0 +1,150 @@
+ToDos and Ideas for CrazyStat:
+ - login screen: when another language was selected, reload
+   (only if no user/pw yet!)
+ - Monday or Sunday first day of the week: Allow language-file to overwrite the
+   default, but user setting overwrites language-default
+ - link "user online" to the latest log (show_log.php)
+ - logs.php :
+   - display total amount of hard drive space used by logfiles
+   - display date of first (and last?) hit saved in logfile
+ - sometimes when clicking "all" after login, not all js-data is being loaded
+   so when clicking on a hostname, no entries appear
+ - highlight search engine Keywords in referer-module (different color/..)
+ - update DownloadCounter
+ - link-counter (count when users click an external link - AJAX?)
+ - APS package (SaaS for Plesk/Froxlor/...), Wordpress/Joomla/Typo3
+   Plugin/Extension, ...
+ - analyze which pages are linked by other sites (i.e. files which have a
+   foreign referer)
+   - own module?
+   - integraded in file-module?
+   - integration in referer-module? (show which files this referer links to most)
+ - send weekly (or daily) reports via email to webmaster (optinally) - cronjob
+   or triggered by website-visit (stat.php starts it)
+   also maybe make it send an email, if yesterday a new visitor record
+   (for this month/year/total/...) was achieved 
+ - check why flock() was not used to prevent RCs
+ - twitter-integration: let users tweet about their CrazyStat-results! 
+   "Today #CrazyStat counted X visitors on my site which is Y more than normal!"
+   "Today #CratyStat counted more visitors on my site then on any other day!"
+   "According to #CrazyStat, most of my visitors use #BrowserX."
+ - resolution-module:
+  - record size of browser window (not only screen size) as with huge wide-screen
+    resolutions, users tend to have their browser window not maximized
+  - new graphical illustration / diagram type:
+    resolutions are represented by rectangles.
+    The more visitors, the darker the rectangle.
+    The bigger the resolution, the bigger the rectangle.
+    Rectangles with different colors?
+    All rectangles start top/left.
+    Two labeled axes.
+ - improve data privacy:
+   - optionally automaticalls delete logs after a defined period of time or x MB
+     log usgae
+   - dnt: save hit time, but no IP, no referers, no UA, no res, no colors (but file???)
+     maybe delete parameters from files (white-list for parameters such as "page"?)?
+   - optionally do not log referers or optionally delete referers after x days
+     optionally only log the domain of a referer or domain + filename (no parameters)
+   - create a data privacy statement that users can put on their site which explains
+     how CrazyStat treats personal data.
+   - contact https://www.datenschutzzentrum.de/tracking/ and ask whether
+     CrazyStat is conform with German data privacy laws  
+ - IE9: Lyteframes have useless scrollbars!? :(
+ - Do not show limit/all symbol in tree Referer-Module if there are
+   only LIMIT entries to show. To do this, the referers need to be grouped before
+   konsole() is started to know the number of hosts at that point. 
+ - show_log: link IP-adresses (if not anonymized) to a lookup site (configurable)
+   like http://ip-whois-lookup.com/lookup.php?ip= or
+   http://www.infosniper.net/index.php?ip_address=
+ - refererTree: link to Domain (not only subpage)
+ - sortable table: display sort-icon onmousover
+ - special default-preset with the settings of the last session
+ - menu: breadcrumbs: Statistic > Logs > stat.log
+ - menu: on mobile phone, the buttons where not shown
+ - translate the logtool
+ - fix: show_log (backwards) says "end of logfile" for files with just 1 line
+ - Animate Bar charts (optional)
+ - Presets: One icon, on mouseover a menu opens with all the presets using JS (no <select>)
+ - when clicking on an entry in a module, start a filter in show_log which shows the individual
+   hits for this entry. E.g. when clicking on a day in hits/day, show all hits of that
+   day in show_log
+ - show_log.php: Colorize rows (each IP has its own color)
+ - show_log.php: When clicking an IP in the logs, start a filter/search for that IP
+   (also for User Agents? Color Depth? Screen resolution?)
+ - month-module: visits/day so that the current month can be easily compared
+   (also  for other modules?)#
+ - year-module?
+ - javascript-module?
+ - upload ("share") your presets
+ - (upload logfiles via GUI that have been backed up)
+ - every user controls its own presets
+ - save multiple files in "Logs"
+ - "Logs" (filter): Show how many search results (hits/visitors?)
+ - Referer / Keywords: change table-layout so that keywords is just under system
+ - Hits/day this / last month 
+ - limit/total: instead of toolbar-button some fancy image under the list?
+   load onScroll? onLoad (this means after everything has been loaded, fetch the complete list)?
+ - Hits-module: changeable IP-Blocking?
+ - Number of entrys/time period
+   (how many different referer domains this month? year-view with all months)
+ - Automatic (ajax?) refresh every x minutes (optional)
+ - "live log view": log file (viewed as a table) refreshes automatically
+ - "dynamic GUI":
+   - Modules can be dragged & dropped & resized
+   (-> Dynamic Drive DHTML Window Widget + Modal Window)
+   - User can save his view and share it with others online
+   - New Standard-views:
+ 	- technical settings (Browser, systems, color depth)
+ 	- Hits/Time (Day/Month/Year)
+ 	- Files (Files / Referer)
+   - User can "minimize" modules
+ - Month-Cache/Split-Cache/Universal-Cache
+ - Settings-GUI, Installer (simpel/advanced)
+ - Make all data available to other scripts, e.g  User online, Hits, etc.
+ - User online Max
+ - Clickcounter: New Module Clickcounter, which counts clicks on downloads/links/...
+   Maybe tab in "files" module?. Possibility to show the number of clicks
+   next to the download-link
+ - "Without JavaScript"-Setting
+ - Page Visit Time: Average time users spend on site, on particular sites,
+   (files-module?), total time spent
+		- month-module: How much time did users spend on the site this month? last month? (same for day/weekday/hour)
+		- file-module: how much time do people spend on particular sites?
+		- referer-module: how much time do people spend on the site that come from a particular referer?
+		- Keywords-module: How long do people stay on the site that came to site site searching for a particular keyword?
+		- browser/resolution/color depth-module: I do not see much sense here
+		- new module "visiting time", e.g.:
+			0-10s	60%
+			10-30s	20%
+			30-90s	10%
+			90s-5m	5%
+			5m+		5%
+ - Improve coding (structure / OOP!)
+ - (Counter: include background image)
+ - StatServer-Docu
+ - Country or Language of visitors (Maxmind GeoIP (GeoLite) Country/City?)
+   detect US-States? continent-module? City?
+ - improve queryregex.txt (more engines, not all sites etc ...)
+ - How many visitors come from which search engine? (search-engine-module?)
+ - Diagrams using jpGraph? (http://www.aditus.nu/jpgraph/)
+ - Filter supports PCRE
+ - Entrypages/Exitpages
+ - Tendencys
+ - Log Session-Variables (username, ...)
+ - replace mktree with noAjax-Version of ajaxTree?
+ - error-message when rel-path is wrong
+ - categorize files (ajaxTree?)
+ - Report unknown browser / systems
+ - Limit Time-Modules to system attributes/files/referers/search phrases
+  -> e.g. Month-module: Referer google -> development of Google-click-throughs
+  -> e.g. Month-module: Browser Firefox -> How has the use of this browser changed?
+  -> e.g. day-module: file xy.z -> How often was this file opened in the last days?
+ - export data of a module as excel/openoffice/libreoffice/csv-file? (including diagrams?)
+ - automatic check whether .htaccess-protection of logfiles works
+ - heatmaps / where do people click? / ...
+ - ignore visits from certain IPs (setting)
+ - include.php - (optionally): do not echo the (X)HTML, put everything in a
+   variable makes it easier to integrate CrazyStat into some CMS
+ - Visitor distinction by (hashed?) session-id (NAT-users etc.)
+   optionally? (all hits/by IP / by session)
+   Generate virtual anonymous IP from session ID?

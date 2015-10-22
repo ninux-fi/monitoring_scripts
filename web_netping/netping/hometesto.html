@@ -1,0 +1,21 @@
+<h2><em>Il progetto NetPing</em></h2>
+
+<p>nasce sulla esigenza di monitorare la velocità di comunicazione
+di ogni nodo con i suoi vicini della rete Ninux di Firenze. </p>
+
+<p>Il progetto è basato sulla semplicità di
+accesso alle informazioni attraverso il protocollo ICMP.</p>
+
+<p>Ogni nodo esegue un test di velocità con i suoi nodi vicini 1-hop una volta ogni ora
+e registra il risultato in un file (ping.csv).</p>
+
+<p>Ogni ora i dati del file vengono letti da un server che esegue sul nodo una richiesta wget.
+E' quindi necessario che il nodo abbia attivo un servuzio HTTP</p>
+
+<p>I dati sono quindi archiviati (MySQL) e condivisi attraverso la rete Ninux.
+Si può ottenere una situazione media di traffico presente sulla linea per individuare eventuali sovraccarico di nodi.</p>
+
+<p><strong>Nessun tipo di rilevazione è effettuata sul tipo di protocolli o sul contenuto dei pacchetti.</strong></p>
+
+<p> I sorgenti del porgetto sono disponibili qui :<p>
+ <a href="https://github.com/ninux-fi/monitoring_scripts.git">https://github.com/ninux-fi/monitoring_scripts.git</a> 

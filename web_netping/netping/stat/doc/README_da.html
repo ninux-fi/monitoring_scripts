@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>CrazyStat: Readme-fil (Dansk)</title>
+  <link rel="stylesheet" href="style.css" type="text/css" />
+ </head>
+ <body class="l2">
+
+<h1><a name="top">CrazyStat</a></h1>
+<p><i>Version 1.71 RC1</i></p>
+<p>Dette er CrazyStats Readme-fil. CrazyStat er et brugervenligt, omfattende og gratis statistik-script med valgfri t&aelig;ller..
+Mange tak fordi du valgte CrazyStat.</p>
+
+<h2><a name="inhalt">1. Indhold</a></h2>
+
+<ol>
+ <li><a href="#inhalt">Indhold</a></li>
+ <li><a href="#features">Egenskaber</a>
+  <ul>
+   <li><a href="#features_general">Generelt</a></li>
+   <li><a href="#features_stat">Statistik</a></li>
+   <li><a href="#features_counter">T&aelig;ller</a></li>
+  </ul>
+ </li>
+ <li><a href="#requirements">Foruds&aelig;tninger</a>
+  <ul>
+   <li><a href="#requirements_server">Krav til serveren</a></li>
+   <li><a href="#requirements_client">Krav til browseren</a></li>
+  </ul>
+ </li>
+ <li><a href="#installation">Installation</a>
+  <ul>
+   <li><a href="#installation_quick">Hurtig installation</a></li>
+   <li><a href="#installation_detailed_counter">Detaljeret installaionsproces med t&aelig;ller</a></li>
+   <li><a href="#installation_detailed_no_counter">Detaljeret installaionsproces uden t&aelig;ller</a></li>
+   <li><a href="#installation_after">Efter installationen</a></li>
+  </ul>
+ </li>
+ <li><a href="#faq">Ofte stillede sp&oslash;rgsm&aring;l (FAQ)</a></li>
+ <li><a href="#history">Historie</a></li>
+ <li><a href="#todo">To do</a></li>
+ <li><a href="#copyright">Copyright og licens</a></li>
+</ol>
+
+<h2><a name="features">2. Egenskaber</a></h2>
+
+<h3><a name="features_general">Generelt</a></h3>
+<ul>
+ <li>er i stand til at fungere helt uden JavaScript (hvilket mange scripts ikke er)</li>
+ <li>ingen reklamer, logoer eller lignende ting optr&aelig;der p&aring; de sider, som t&aelig;lles - kun en lille bem&aelig;rkning i alt-attributten ved tilvalg af t&aelig;ller</li>
+ <li>uafh&aelig;ngig af andre serviceudbydere, da der er talte om et PHP script, som k&oslash;rer p&aring; din server</li>
+ <li>konfigurering af IP-blokering</li>
+ <li>IPere kan gemmes anonymt, hvis &oslash;nsket, s&aring;ledes at de bes&oslash;gende ikke kan spores</li>
+ <li>statistik og t&aelig;ller i et og samme script!</li>
+ <li>ingen MySQL n&oslash;dvendig</li>
+ <li>adgang til serverens logfiler ikke n&oslash;dvendig</li>
+ <li>dine sider vil fortsat v&aelig;re gyldig HTML eller XHTML</li>
+ <li>du kan v&aelig;lge om dine egne bes&oslash;g skal t&aelig;lles med eller ej</li>
+ <li>log-filer kan komprimeres med gzip, hvis &oslash;nsket, s&aring; de bruger s&aring; lidt webplads som muligt</li>
+</ul>
+
+<h3><a name="features_stat">Statistik</a></h3>
+<ul>
+ <li>Alle resultater vises i en overskuelig brugerflade, som ved hj&aelig;lp af s&oslash;jlediagrammer giver et hurtigt overblik over alle informationer 
+     (for browsere, sk&aelig;rmopl&oslash;sninger og operativsystemer vises ogs&aring; cirkeldiagrammer).</li>
+ <li>F&oslash;lgende data for hits og bes&oslash;gende bliver analyseret b&aring;de mht. tidsrum og totalt tidsforbrug:
+  <ul>
+   <li>hits i alt</li>
+   <li>hits denne m&aring;ned</li>
+   <li>hits i forrige m&aring;ned</li>
+   <li>brugere online</li>
+   <li>flest hits / dag</li>
+   <li>hits i snit / dag</li>
+   <li>hits / ugedag</li>
+   <li>hits / m&aring;ned</li>
+   <li>hits / dag</li>
+   <li>hits / time</li>
+   <li>den browser som brugeren anvender</li>
+   <li>filer (sider) set af den bes&oslash;gende</li>
+   <li>sk&aelig;rmopl&oslash;sning</li>
+   <li>antal farver</li>
+   <li>operativsystem</li>
+   <li>henvisninger</li>
+   <li>de s&oslash;geord, som brugeren anvendte, f&oslash;r han/hun kom til hjemmesiden</li>
+  </ul>
+ </li>
+ <li>gennemsnits -og sumv&aelig;rdier i alle moduler</li>
+ <li>v&aelig;lg om du vil beskytte statistikken med forskellige adgangskoder for flere forskellige brugere - adgangskoder gemmes og sendes over nettet i krypteret form</li>
+ <li>individuelle &quot;forudindstillinger&quot; kan gemmes, s&aring; du har hurtig og let adgang til din foretrukne m&aring;de at f&aring; vist statistikken p&aring;</li>
+ <li>download og h&aring;ndt&eacute;r log-filer via web-brugerfladen (backup, slet)</li>
+ <li>se logfiler (som tabel)</li>
+ <li>s&oslash;gning i log-filer (filter)</li>
+ <li>optimeret analyseringsevne takket v&aelig;re flere forskellige caching-teknikker</li>
+ <li>flere sprog (p.t. tysk, engelsk, hollandsk og dansk)</li>
+</ul>
+
+<h3><a name="features_counter">T&aelig;ller</a></h3>
+<ul>
+ <li>kan deaktiveres</li>
+ <li>n&aring;r t&aelig;lleren er deaktiveret, ser den bes&oslash;gende et billede, som du v&aelig;lger  (f.eks. blank.gif =&gt; brugeren ser ingenting)</li>
+ <li>der kan frit v&aelig;lges et design for t&aelig;lleren blandt hundredvis af gratis billeder</li>
+ <li>t&aelig;l hits eller bes&oslash;gende (blokering af ip'ere)</li>
+ <li>v&aelig;lg frit hvor mange tal, du vil have vist</li>
+ <li>mulighed for transparens, s&aring; din t&aelig;ller kan integreres bedst muligt i dit design</li>
+ <li>en hvilken som helst v&aelig;rdi kan l&aelig;gges til den rigtige t&aelig;ller-v&aelig;rdi (f.eks. v&aelig;rdien af din gamle t&aelig;ller)</li>
+ <li>du kan bestemme, hvilken tekst t&aelig;lleren skal vise, n&aring;r siden opdateres</li>
+ <li>i stedet for en billed-t&aelig;ller kan du f&aring; vist en tekstbaseret t&aelig;ller, som let lader sig integrere med en hvilken som helst tekst og hvis udseende kan defineres via CSS</li>
+</ul>
+
+<p><a href="#top">G&aring; til top</a></p>
+
+<h2><a name="requirements">3. Foruds&aelig;tninger</a></h2>
+
+<h3><a name="requirements_server">Krav til serveren</a></h3>
+<ul>
+ <li>PHP &gt;= 5.1 (5.3.3, 5.3.8 er alle blevet testet),
+   for t&aelig;ller og cirkeldiagrammer kr&aelig;ves gdlib &gt; 2.0.28.<br />
+   Af sikkerhedsm&aelig;ssige hensyn anbefales generelt register_globals = Off (men dette er ikke et krav).
+   Fungerer ogs&aring; ved safe_mode = On.</li>
+ <li>Ingen MySQL</li>
+ <li>Hjemmesider med <i>en masse</i> bes&oslash;gende b&oslash;r anvende en &quot;st&aelig;rk&quot; server</li>
+ <li><strong>Scriptet k&oslash;rer p&aring; stort set alle php-webservere, inkl. dem der er gratis</strong></li>
+</ul>
+
+<h3><a name="requirements_client">Krav til browseren</a></h3>
+<ul>
+ <li>Browser (Internet Explorer 5.5 - 9, Opera 5 - 11.62,
+   Firefox 1.0 - 11, Safari 3.2.1 - 5.1.5 (Win), Google Chrome 1.0 - 18 er blevet testet</li>
+ <li>Visning af billeder (m&aring; ikke v&aelig;re deaktiveret, tekstbrowsere bliver ikke talt med)</li>
+ <li>JavaScript (er kun) n&oslash;dvendig for at opfange sk&aelig;rmopl&oslash;sning og antallet af farver - plus nogle funktioner som er rare at have p&aring; siden med statistik (men selv statistik-siden fungerer uden JavaScript!)</li>
+</ul>
+
+<p><a href="#top">G&aring; til top</a></p>
+ 
+<h2><a name="installation">4. Installation</a></h2>
+
+<p><strong>Se <a href="faq_en.html#faq40">FAQ</a> hvis du har brug for hj&aelig;lp i forbindelse med opdatering af CrazyStat 1.7x (inklusiv ekstra udgivelser) til denne version.</strong><br />
+Opdatering fra CrazyStat 1.5x eller 1.6x er alene beskrevet i den <a href="faq_de.html#faq3">tyske FAQ</a> (fordi CrazyStat &lt;
+1.70 kun fandtes p&aring; tysk).</p>
+
+<h3><a name="installation_quick"></a>Hurtig installation (trin i parentes g&aelig;lder kun t&aelig;lleren!)</h3>
+<p>Denne guide er tilt&aelig;nkt erfarne brugere.</p>
+<ol>
+ <li>Pak filen ud</li>
+ <li>(V&aelig;lg/download t&aelig;ller-design (grafik findes i stat/usr/counter_styles/ - andre designs findes p&aring;
+     <a href="http://en.christosoft.de/Crazystat/Counter_styles" target="_blank">http://en.christosoft.de/Crazystat/Counter_styles</a>)</li>
+ <li>(Konvert&eacute;r t&aelig;ller-designet til PNG (eller gif, hvis du har GDLib-underst&oslash;ttelse af gif) (<a href="faq_en.html#faq1" target="_blank">se FAQ</a>) og         
+     gem i &quot;stat/usr/counter_styles&quot;)</li>
+ <li>&Aring;ben stat/usr/config.php og tilpas indstillingerne (is&aelig;r $config_rel_path)</li>
+ <li>Upload &quot;stat&quot;-mappen inklusiv alle filer og undermapper</li>
+ <li>Anvend chmod 777 p&aring; stat/usr og alle mappens filer samt undermapper. G&oslash;r det samme med stat/src/log-tool</li>
+ <li>Inds&aelig;t &lt;?php @include_once(&quot;stat/src/include.php&quot;); ?&gt; mellem &lt;body&gt; og &lt;/body&gt;
+     p&aring; alle de sider, som skal t&aelig;lles med, <u>skift filendelse fra &quot;.html&quot; eller &quot;.htm&quot; til &quot;.php&quot;</u> (hvis endelsen ikke i forvejen er &quot;.php&quot;).
+     Se FAQ: &quot;CrazyStat i .html-filer&quot;, &quot;T&aelig;l sider, som ligger i forskellige mapper&quot;</li>
+ <li>&Aring;ben statistikken (http://www.example.com/stat/). Hvis du har valgt at beskytte siden med adgangskode, bedes du &aelig;ndre adgangskoden, n&aring;r du logger ind. Har du ikke foretaget &aelig;ndringer mht. brugernavn og adgangskode er brugernavnet &quot;admin&quot;, adgangskoden er &quot;pass&quot;.</li>
+</ol>
+
+<p>Hvis du har &aelig;ndret &quot;stat&quot; til noget andet, skal du tilpasse koden (trin 7) og $config_rel_path (trin 4)!</p>
+       
+<h3><a name="installation_detailed_counter">Detaljeret installationsproces <i>med</i> t&aelig;ller</a></h3>
+<ol>
+ <li>Pak filen ud et eller andet sted p&aring; din egen harddisk (benyt f.eks. <a href="http://www.7-zip.org/" target="_blank">7-Zip</a>)</li>
+ <li>V&aelig;lg et design til t&aelig;lleren. Du finder forskellige designs i mappen &quot;stat/usr/counter_styles&quot;, som er klar til brug.
+   P&aring; <a href="http://en.christosoft.de/Crazystat/Counter_styles" target="_blank">http://en.christosoft.de/Crazystat/Counter_styles</a>
+   kan du finde endnu flere designs, links til sider med stadig flere designs s&aring;vel som tips til, hvordan du selv kan designe en t&aelig;ller.</li>
+ <li>Du skal sikre dig, at t&aelig;lleren er gemt i PNG-format (eller GIF hvis din server underst&oslash;tter det).
+   I ofte stillede sp&oslash;rgsm&aring;l - eller FAQ - finder du instruktioner i, hvordan man konverterer sit t&aelig;ller-design til PNG. Plac&eacute;r dit design i mappen &quot;stat/usr/counter_styles&quot;.</li>
+ <li>&Aring;ben &quot;stat/usr/config.php&quot; i et rent tekstprogram (s&aring;som Notesblok eller <a href="http://www.pspad.com/en/" target="_blank">PSPad</a>)
+     og tilpas indstillingerne efter dine behov (is&aelig;r $config_rel_path). T&aelig;llerens filnavn skal angives i $config_counter_file_name og for at aktivere t&aelig;lleren <strong>skal</strong> der endvidere st&aring; $config_counter_enabled=true;<br />
+     <a href="config_settings_da.html">Mere information om alle konfigurationsindstillingerne</a></li>
+ <li>Upload &quot;stat&quot;-mappen med alle filer og undermapper til din server 
+     (f.eks. via FTP med <a href="http://filezilla-project.org/" target="_blank">FileZilla</a>)</li>
+ <li>Anvend chmod 777 p&aring; mappen &quot;stat/usr&quot; inklusiv alle mappens filer og undermapper. Gentag med mappen &quot;stat/src/log-tool&quot;. Se FAQ hvis du ikke ved, hvordan dette g&oslash;res.</li>
+ <li>Inds&aelig;t &lt;?php @include_once(&quot;stat/src/include.php&quot;); ?&gt; mellem &lt;body&gt; og &lt;/body&gt;
+     p&aring; alle de sider, som skal t&aelig;lles med, <u>skift filendelse fra &quot;.html&quot; eller &quot;.htm&quot; til &quot;.php&quot;</u> (hvis siderne ikke allerede har endelsen &quot;.php&quot;).
+     Se FAQ: &quot;<a href="faq_en.html#faq32" target="_blank">CrazyStat i .html-filer</a>&quot;, &quot;<a href="faq_en.html#faq14" target="_blank">T&aelig;l sider, som ligger i forskellige mapper</a>&quot;</li>
+ <li>&Aring;ben statistikken (http://www.example.com/stat/). Hvis du har valgt at beskytte siden med adgangskode, bedes du &aelig;ndre adgangskoden, n&aring;r du logger ind. Har du ikke foretaget &aelig;ndringer mht. brugernavn og adgangskode er brugernavnet &quot;admin&quot;, adgangskoden er &quot;pass&quot;.</li>
+</ol>
+
+
+<h3><a name="installation_detailed_no_counter">Detaljeret installationsproces <i>uden</i> t&aelig;ller</a></h3>
+<ol>
+ <li>Pak filen ud et eller andet sted p&aring; din egen harddisk (benyt f.eks. <a href="http://www.7-zip.org/" target="_blank">7-Zip</a>)</li>
+ <li>&Aring;ben &quot;stat/usr/config.php&quot; i et rent tekstprogram (s&aring;som Notesblok eller <a href="http://www.pspad.com/en/" target="_blank">PSPad</a>)
+     og tilpas indstillingerne efter dine behov (is&aelig;r $config_rel_path). S&aelig;t $config_counter_enabled=false;
+     hvis du vil deaktivere t&aelig;lleren.<br />
+     <a href="config_settings_da.html">Mere information om alle konfigurationsindstillingerne</a></li>
+ <li>Upload &quot;stat&quot;-mappen med alle filer og undermapper til din server 
+     (f.eks. via FTP med <a href="http://filezilla-project.org/" target="_blank">FileZilla</a>)</li>
+ <li>Anvend chmod 777 p&aring; mappen &quot;stat/usr&quot; inklusiv alle mappens filer og undermapper. Gentag med mappen &quot;stat/src/log-tool&quot;. <a href="faq_en.html#faq2" target="_blank">Se FAQ</a> hvis du ikke ved, hvordan dette g&oslash;res.</li>
+ <li>Inds&aelig;t &lt;?php @include_once(&quot;stat/src/include.php&quot;); ?&gt; mellem &lt;body&gt; og &lt;/body&gt;
+     p&aring; alle de sider, som skal t&aelig;lles med, <u>skift filendelse fra &quot;.html&quot; eller &quot;.htm&quot; til &quot;.php&quot;</u> (hvis siderne ikke allerede har endelsen &quot;.php&quot;).
+     Se FAQ: &quot;<a href="faq_en.html#faq32" target="_blank">CrazyStat i .html-filer</a>&quot;, &quot;<a href="faq_en.html#faq14" target="_blank">T&aelig;l sider, som ligger i forskellige mapper</a>&quot;</li>
+ <li>&Aring;ben statistikken (http://www.example.com/stat/). Hvis du har valgt at beskytte siden med adgangskode, bedes du &aelig;ndre adgangskoden, n&aring;r du logger ind. Har du ikke foretaget &aelig;ndringer mht. brugernavn og adgangskode er brugernavnet &quot;admin&quot;, adgangskoden er &quot;pass&quot;.</li>
+</ol>
+
+<h3><a name="installation_after">Efter installationen</a></h3>
+<ul>
+ <li>Du kan &aring;bne statistikken med din browser ved at g&aring; til adressen &quot;http://example.com/stat/&quot;</li>
+ <li>Log-v&aelig;rkt&oslash;jet (kun tysk indtil videre) findes p&aring; adressen &quot;http://example.com/stat/log-tool/&quot; (<a href="faq_en.html#faq12" target="_blank">se FAQ</a>)</li>
+</ul>
+
+<p><a href="#top">G&aring; til top</a></p>
+
+<h2><a name="faq">5. Ofte stillede sp&oslash;rgsm&aring;l (FAQ)</a></h2>
+<p>Se venligst  <a href="faq_en.html">faq_en.html</a></p>
+
+<p><a href="#top">G&aring; til top</a></p>
+
+<h2><a name="history">6. Historie</a></h2>
+<p>Se venligst <a href="history.html">history.html</a> (findes kun p&aring; tysk op til version 1.70, herefter kun engelsk).</p>
+
+<p><a href="#top">G&aring; til top</a></p>
+
+<h2><a name="todo">7. Ting der skal g&oslash;res</a></h2>
+<p>Se venligst <a href="todo.txt">todo.txt</a> (kun engelsk)</p>
+
+
+<p><a href="#top">G&aring; til top</a></p>
+
+<h2><a name="copyright">8. Copyright og licens</a></h2>
+<p>Copyright (C) 2004-2012  Christopher Kramer</p>
+
+<p>This program is free software; you can redistribute it and/or
+modify it under the terms of the <a href="license.txt">GNU General Public License</a>
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received <a href="license.txt">a copy of the GNU General Public License</a>
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</p>
+
+<p>Website: <a href="http://en.christosoft.de" target="_blank">http://en.christosoft.de</a><br />
+E-Mail:  webmaster AT christosoft DOT de<br />
+Version: 1.71 RC1
+</p>
+<p><a href="#top">Go to top</a></p>
+
+</body>
+</html>
