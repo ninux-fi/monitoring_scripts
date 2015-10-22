@@ -12,7 +12,7 @@ NetPing
 	[http://en.christosoft.de/ ](http://en.christosoft.de/) e
 	[http://naku.dohcrew.com/libchart/pages/introduction/ ](http://naku.dohcrew.com/libchart/pages/introduction/).
 	La serie dei file consente al piena gestione del sito.
-	La sola configurazione richiesta per rendere operativo il sito  Ã¨ quella per 
+	La sola configurazione richiesta per rendere operativo il sito  è di 
 	aggiornare nel file "libreria.php" l'indirizzo dello host su cui risiede MySQL server.
  	
 	
