@@ -1,7 +1,7 @@
-Ninux_rate_meter
+NetPing
 ================
 
-**Sistema verifica della velocit� di  connessione  tra i Nodi della Rete Ninux tramite il protocollo SNMP**
+**Sistema verifica della velocità di  connessione  tra i Nodi della Rete Ninux tramite il protocollo SNMP**
 
  - Progetto per la rappresentazione dei dati WEB based
  	
@@ -12,7 +12,7 @@ Ninux_rate_meter
 	[http://en.christosoft.de/ ](http://en.christosoft.de/) e
 	[http://naku.dohcrew.com/libchart/pages/introduction/ ](http://naku.dohcrew.com/libchart/pages/introduction/).
 	La serie dei file consente al piena gestione del sito.
-	La sola configurazione richiesta per rendere operativo il sito  è quella per 
+	La sola configurazione richiesta per rendere operativo il sito  Ã¨ quella per 
 	aggiornare nel file "libreria.php" l'indirizzo dello host su cui risiede MySQL server.
  	
 	
