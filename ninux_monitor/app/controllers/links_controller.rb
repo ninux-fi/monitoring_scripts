@@ -6,7 +6,8 @@ class LinksController < ApplicationController
 
   # GET /links/:source/:dest
   def show
-    @data = Dati.where({ip_sorg: params[:source], ip_dest: params[:destination]}).limit(50)
+    @data = Dati.where({ip_sorg: params[:source], ip_dest: params[:destination]}).order("data_remota desc, ora_remota desc").limit(50).reverse
+    @src = @data[0].nodo unless @data.empty?
     logger.debug(@data)
     respond_to do |format|
       format.html  # sjow.html.erb
