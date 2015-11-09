@@ -1,5 +1,11 @@
 <h1>Link <%= "#{@data[0].ip_sorg} -> #{@data[0].ip_dest}"%></h1>
 
+<div>
+  <div>Nodo sorgente: <%= @src.nome %></div>
+  <div><%= @data[0].ip_sorg %> <span id="srcname"></span></div>
+  <div><%= @data[0].ip_dest %> <span id="dstname"></span></div>
+</div>
+
 <canvas id="canvas" width="960" height="500"></canvas>
 
 <div id="nav_links">
@@ -8,6 +14,14 @@
 
 <script type="text/javascript">
 jQuery( function() {
+
+  var reverse_dns = function(url, elem_id) {
+    jQuery.get(url, function(dns) {
+      console.log(dns);
+      jQuery(elem_id).inner_html = dns.name;
+    });
+  };
+
   jQuery.get("<%=  graph_links_url(source: @data[0].ip_sorg, destination: @data[0].ip_dest, format: :json)%>",
     function(graph_data) {
       console.log("successful");
@@ -58,5 +72,8 @@ jQuery( function() {
         scaleBeginAtZero: true
       });
     });
+
+  //reverse_dns("<%=  dns_reverse_url(address: @data[0].ip_sorg, format: :json)%>", '#srcname');
+  //reverse_dns("<%=  dns_reverse_url(address: @data[0].ip_dest, format: :json)%>", '#dstname');
 });
 </script>
