@@ -70,9 +70,12 @@ class olsr_graph():
         print "./alias.py jsonplugin_url"
         print "ex: ./alias.py http://localhost:9090/"
 
-
 url = sys.argv[1]
 c = olsr_graph(url)
 invert_repo = c.get_mid()
 main_IP = c.get_config()
 invert_repo[main_IP] = [i for i in c.get_interfaces() if i != main_IP]
+
+for main_IP, aliases in invert_repo.items():
+    print main_IP, aliases
+

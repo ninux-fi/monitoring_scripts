@@ -14,3 +14,6 @@ user=user
 #password 'segreta'
 password=password
 schemadb=net_ping
+
+[olsr]
+olsr_url=http://localhost:9090/
