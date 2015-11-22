@@ -3,17 +3,17 @@
 [path]
 # Absolute path 
 # path to save curren log file (diario.log)
-pathnome_log=/yourpath/netping/diario.log
-# path to archive previus log files each day at 00:07 (more or less) 
-path_arch=/yourpath/netping/archive/
-# Data Base  Credential to conect to it
+pathnome_log=/home/salvatore/netping/diario.log
+# path to archive previus log files each day at 00:07 
+path_arch=/home/salvatore/netping/archive/
+# Data Base  Credential to connect to it
 [database]
-# 10.150.xx.xx
-databasehost=ipv_address
+#IP of where DB server
+databasehost=xx.xx.xx.xx
+# Db user
 user=user
 #password 'segreta'
 password=password
 schemadb=net_ping
-
-[olsr]
-olsr_url=http://localhost:9090/
+[url]
+urlj=http://localhist:9090

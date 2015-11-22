@@ -3,6 +3,11 @@
 #============================================================================
 #============================================================================
 #============================================================================
+import urllib2
+import json
+import requests
+import socket
+from distutils import spawn
 #============================================================================
 #============================================================================
 import MySQLdb as mdb
@@ -16,7 +21,6 @@ import smtplib
 from subprocess import Popen,PIPE
 import base64
 import ConfigParser
-from aliases import  olsr_graph
 #============================================================================
 #============================================================================
 class logger():
@@ -32,7 +36,7 @@ class logger():
             self.path=self.path+f+"/"
         for f in filename[-1:]:
             self.name=self.name+f
-#       print self.path+self.name
+#        print self.path+self.name
         if (not os.path.isfile(self.path+self.name)):
             dfile = open (self.path+self.name,"w")
             dfile.write ("Nuovo File del "+time.strftime("%c")+"\n")
@@ -43,10 +47,10 @@ class logger():
 #============================================================================
 #============================================================================
     def event_log(self,message):
-#       print time.strftime("%H:%M")
-#       print self.path+self.name
+#        print time.strftime("%H:%M")
+#        print self.path+self.name
         dfile = open (self.path+self.name,"a")
-#       print message
+#        print message
         dfile.write (message)
         dfile.close()
         self.archive()
@@ -69,7 +73,7 @@ class logger():
                 f=open("/home/salvatore/netping/mail_account","r")
                 self.account=string.split(f.read(),"\n")
                 f.close()
-    #           print self.account
+    #            print self.account
                 self.user=string.split(self.account[1],",")[0]
                 self.passw=string.split(self.account[1],",")[1]
                 self.sender=string.split(self.account[2],",")[0]
@@ -78,17 +82,17 @@ class logger():
                 self.report=True
 #                      "0123456789012345678901201234567890123450123456789001234567890112345656780123456789012012345678900"
 #                                  22                   15           10        10          10           12        10        30
-#                                     "--------------------------------------------------------------------------------------------------------------------"    
-#               self.testo=self.testo+"|        Nodo          |    Indirizzo  | Rx Byte  | Tx Byte  | Attivita % |   Stato  |           Contatto           |"
-#                                     "--------------------------------------------------------------------------------------------------------------------"
-#                                 "|RossiniMusicaDalleOnde|172.119.200.255|4294967296|4294967296|    100%    |Non Attivo|                              "
-#                                     "--------------------------------------------------------------------------------------------------------------------"    
-                self.testo="--------------------------------------------------------------------------------------------------------------------\n" 
+#                                      "--------------------------------------------------------------------------------------------------------------------"    
+#                 self.testo=self.testo+"|        Nodo          |    Indirizzo  | Rx Byte  | Tx Byte  | Attivita % |   Stato  |           Contatto           |"
+#                                      "--------------------------------------------------------------------------------------------------------------------"
+#                                  "|RossiniMusicaDalleOnde|172.119.200.255|4294967296|4294967296|    100%    |Non Attivo|                              "
+#                                      "--------------------------------------------------------------------------------------------------------------------"    
+                self.testo="--------------------------------------------------------------------------------------------------------------------\n"    
                 self.testo=self.testo+"|        Nodo          |    Indirizzo  | Rx MByte | Tx MByte | Attivita % |   Stato  |           Contatto           |\n"
                 for rec in self.records:
-                    self.testo=self.testo+"|----------------------|---------------|----------|----------|------------|----------|------------------------------|\n" 
+                    self.testo=self.testo+"|----------------------|---------------|----------|----------|------------|----------|------------------------------|\n"    
                     self.testo=self.testo+rec
-                self.testo=self.testo+"--------------------------------------------------------------------------------------------------------------------\n"  
+                self.testo=self.testo+"--------------------------------------------------------------------------------------------------------------------\n"    
                 self.records=[]
                 self.server=smtplib.SMTP(self.provider)
                 self.server.login(self.user,base64.b64decode(self.passw))
@@ -142,7 +146,7 @@ class NODO():
         f=open("/home/salvatore/netping/mail_account","r")
         self.account=string.split(f.read(),"\n")
         f.close()
-#   print self.account
+#    print self.account
         self.user=string.split(self.account[1],",")[0]
         self.passw=string.split(self.account[1],",")[1]
         self.sender=string.split(self.account[2],",")[0]
@@ -154,14 +158,13 @@ class NODO():
 #============================================================================
     def run(self):
 # Acquisizione dati remoti
-#       print self.me["ip"]+" is running"
-        self.registra() # verifica se il nodo e' ancora o di nuovo attivo
+#        print self.me["ip"]+" is running"
+        self.registra()    # verifica se il nodo e' ancora o di nuovo attivo
         if (self.me ["attivo"]):
-#           print self.me["ip"]+" is active"
-            self.refresh_alias_table()
+#            print self.me["ip"]+" is active"
             if (not self.get_data()): # risposta completa ricevuta ?
                 self.deactivate()  # NO ! registra il nodo Non attivo
-#       print self.me["ip"]+" cicle end"
+#        print self.me["ip"]+" cicle end"
         
 #============================================================================
 # Attiva un nodo al campionamento dichiarandolo attivo
@@ -175,22 +178,22 @@ class NODO():
             if r.find("1 received") <> -1:
                 self.update()
                 return
-#           else:
+#            else:
         self.deactivate()
 #============================================================================
 # Rileva il contatto  registrato del nodo  (es: miaposta@mailprovider.it)
 #============================================================================
     def get_contatto(self):
-#       result = os.popen("snmpget -c public -v1 "+self.me["ip_man"]+" SNMPv2-MIB::sysContact.0")
+#        result = os.popen("snmpget -c public -v1 "+self.me["ip_man"]+" SNMPv2-MIB::sysContact.0")
 #---------------------------------------------------------------------------------------------------------
         cmd = "snmpget -c public -v1 "+self.me["ip_man"]+" SNMPv2-MIB::sysContact.0"
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
         r = p.stdout.read()
 #---------------------------------------------------------------------------------------------------------
-#       r=result.readline()
-#       print "ho letto :  ",r,type(r)
+#        r=result.readline()
+#        print "ho letto :  ",r,type(r)
         if (len(r)):
-#           print string.split(r,": ")[1].strip("\n")
+#            print string.split(r,": ")[1].strip("\n")
             return(string.split(r,": ")[1].strip("\n"))
         else:
             return ""
@@ -198,14 +201,14 @@ class NODO():
 # Rileva il luogo di posizionamento dell'antenna registrato del nodo  (es:Lippi)
 #============================================================================
     def get_location(self):
-#       result = os.popen("snmpget -c public -v1 "+self.me["ip_man"]+" SNMPv2-MIB::sysLocation.0")
+#        result = os.popen("snmpget -c public -v1 "+self.me["ip_man"]+" SNMPv2-MIB::sysLocation.0")
 #---------------------------------------------------------------------------------------------------------
         cmd = "snmpget -c public -v1 "+self.me["ip_man"]+" SNMPv2-MIB::sysLocation.0"
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
         r = p.stdout.read()
-#       r = string.split(res,"\n")
+#        r = string.split(res,"\n")
 #---------------------------------------------------------------------------------------------------------
-#       r=result.readline()
+#        r=result.readline()
         if (len(r)):
             return(string.split(r,": ")[1].strip("\n"))
         else:
@@ -215,8 +218,8 @@ class NODO():
 # (es: ath0 -> indice 5)
 #============================================================================
     def get_index_if(self):
-#       print "cerca "+self.me["interface"]
-#       result = os.popen("snmpwalk -v 1 -c public "+self.me["ip_man"]+" interfaces.ifTable.ifEntry.ifDescr")
+#        print "cerca "+self.me["interface"]
+#        result = os.popen("snmpwalk -v 1 -c public "+self.me["ip_man"]+" interfaces.ifTable.ifEntry.ifDescr")
 #---------------------------------------------------------------------------------------------------------
         cmd = "snmpwalk -v 1 -c public "+self.me["ip_man"]+" interfaces.ifTable.ifEntry.ifDescr"
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
@@ -224,7 +227,7 @@ class NODO():
         result = string.split(res,"\n")
 #---------------------------------------------------------------------------------------------------------
         index = 0
-#       for r in result.readlines():
+#        for r in result.readlines():
         for r in result:
             if (len(r)):
                 if ((string.find(r,self.me["interface"]) <> -1) and (string.find(r,self.me["interface"]+".") == -1)):
@@ -250,11 +253,11 @@ class NODO():
 # lettura file remoto
 #---------------------------------------------------------------------------------------------------------
         log.event_log ("[%s] %s : wget %s/ping.csv -O ping%s.csv" % (time.strftime("%c"),self.me["nome"],url,self.me["ip"]))
-#       cmd=  "wget -t 1 -T 10 %s %s/ping.csv -O ping%s.csv" % (opt,url,self.me["ip"])
+#        cmd=  "wget -t 1 -T 10 %s %s/ping.csv -O ping%s.csv" % (opt,url,self.me["ip"])
         cmd=  "wget -t 1 -T 10  %s/ping.csv -O ping%s.csv" % (url,self.me["ip"])
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
         res = p.stdout.read()
-#       r = string.split(res,"\n")
+#        r = string.split(res,"\n")
 #---------------------------------------------------------------------------------------------------------
 # verifica se il file e' stato scaricato
 #---------------------------------------------------------------------------------------------------------
@@ -280,7 +283,7 @@ class NODO():
             p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
             res = p.stdout.read()
             r = string.split(res,"\n")
-#           print "file differenza : ",r
+#            print "file differenza : ",r
 #---------------------------------------------------------------------------------------------------------
 # salva nel DB i record del file remoto che non erano nel file ultimo letto 
 #---------------------------------------------------------------------------------------------------------
@@ -296,9 +299,6 @@ class NODO():
             p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
             res = p.stdout.read()
             r = string.split(res,"\n")
-#---------------------------------------------------------------------------------------------------------
-# salva i dati nel DB
-#---------------------------------------------------------------------------------------------------------
             for l in r:
                 ll=string.split(l," ")
                 if  len(ll)>= 8:
@@ -309,9 +309,8 @@ class NODO():
         cmd="mv ping%s.csv ping%s-1.csv" % (self.me["ip"],self.me["ip"])
         p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
         res = p.stdout.read()
-#       r=result.readlines()
+#        r=result.readlines()
         return True
-
 #===============================================================================
 # Registra il nodo come  attivo, anche sul DB 
 # Registra inoltre le credenziali di contatto e il luogo di istallazione
@@ -319,7 +318,7 @@ class NODO():
     def update (self):
         if not self.me["attivo"] :
             log.event_log ("["+time.strftime("%c")+"] "+"Attivazione Nodo: "+self.me["nome"]+" "+self.me["ip"]+"\n")
-#       print "Riattivazione Nodo: ",self.me["nome"]," " ,self.me["ip_wifi"]
+#        print "Riattivazione Nodo: ",self.me["nome"]," " ,self.me["ip_wifi"]
         if (ping_db.reopenDB("net_ping")):
             v={"registrato":'1',"attivo":'1'}
             ping_db.update_record ("nodi",v,"ip ='"+self.me["ip"]+"'",debug =0 )
@@ -332,7 +331,7 @@ class NODO():
     def deactivate(self):
         if self.me["attivo"] :
             log.event_log ("["+time.strftime("%c")+"] "+"Disattivazione Nodo: "+self.me["nome"]+" " +self.me["ip"]+"\n")
-#       print "Disattivazione Nodo: ",self.me["nome"]," " ,self.me["ip_wifi"]
+#        print "Disattivazione Nodo: ",self.me["nome"]," " ,self.me["ip_wifi"]
         if (ping_db.reopenDB("net_ping")):
             ping_db.update_record ("nodi",{"registrato":'0',"attivo":'0'} , "ip='"+self.me["ip"]+"'",debug =0 )
             self.me["registrato"]=0
@@ -354,7 +353,7 @@ class NODO():
         valori["mese"]=mese=t[1]
         valori["anno"]=t[4]
         valori["ora_locale"]=t[3]
-#       valori["ip"]=self.me["ip"]
+#        valori["ip"]=self.me["ip"]
         valori["ora_remota"]=data[1]
         valori["data_remota"]=data[0]
         valori["ip_sorg"]=data[2]
@@ -362,34 +361,66 @@ class NODO():
         valori["min"]=data[4]
         valori["avg"]=data[5]
         valori["max"]=data[6]
-#       valori["mdev"]="0"
+#        valori["mdev"]="0"
         if (debug):
             print valori
         if (ping_db.reopenDB("net_ping")):
             ping_db.inserisci_record("dati",valori)
             ping_db.closeDB()
+            self.aliases_refresh(valori["ip_sorg"],valori["ora_remota"],valori["data_remota"]) 
+
+#============================================================================
+# Registra main address and aliases ip of the node 
+#============================================================================
+     
+    def aliases_refresh(self, ip_sorg,ora,data):
+        if (ping_db.reopenDB("net_ping")):
+            for k in invert_repo.keys():
+                if k == ip_sorg:
+                    v={}
+                    v["ipmain"]="'"+k+"'"
+                    ping_db.update_record("nodi",v,"ip = '"+self.me["ip"]+"'")
+                    v={}
+                    v["ip"] = "'"+k+"'"
+                    v["id_nodo"] = self.me["ID"]
+                    v["ora_remota"] = ora
+                    v["data_remota"] = data
+                    v["aliases"]=""
+                    for ip in invert_repo[k]:
+                        if len(v["aliases"]):
+                            v["aliases"]=v["aliases"]+","+ip
+                        else:
+                            v["aliases"]="'"+ip
+                    if len(v["aliases"]):
+                        v["aliases"]=v["aliases"]+"'"
+                        ping_db.inserisci_record("ipmain",v)
+                        log.event_log ("[%s] %s Main IP : %s   Aliases : %s\n" %(time.strftime("%c"),self.me["nome"] ,k,v["aliases"]))
+                    ping_db.closeDB()
+                    break
+            ping_db.closeDB()
+
 #============================================================================
 # Salva statistiche giornaliere  nel DB MySQL : tabella "report"
-# i dati sono salvati dopo le ore 24 di ogni giorno
+# i dati sono salvati dopo le ore 24 di ogni giorno (NON USATO)
 #============================================================================
     def save_daily_data(self,debug=0):
         if ((time.strftime("%H") == "23")  and  (not self.saved_today)):
             self.t=string.split(time.strftime("%a %b %d %H:%M:%S %Y")," ")
         if ((time.strftime("%H") == "00")  and  (not self.saved_today)):
             self.saved_today=True
-#           self.time_end=time.time()
-#           t=string.split(time.strftime("%a %b %d %H:%M:%S %Y")," ")
-#           print time.strftime("%a %b %d %H:%M:%S %Y")
-#           print t[0],t[1],t[2],t[3],t[4]
+#            self.time_end=time.time()
+#            t=string.split(time.strftime("%a %b %d %H:%M:%S %Y")," ")
+#            print time.strftime("%a %b %d %H:%M:%S %Y")
+#            print t[0],t[1],t[2],t[3],t[4]
             giorno=self.t[2]
             mese=self.t[1]
             anno=self.t[4]
-#           ora=t[3]
+#            ora=t[3]
             valori={}
             valori["id_nodo"]=self.me["ID"]
             valori["byte_in"]=self.acc_bin
             valori["byte_out"]=self.acc_bout
-#           valori["activity"]=int((self.acc_attivo/86400.0)*100)
+#            valori["activity"]=int((self.acc_attivo/86400.0)*100)
             valori["activity"]=int((self.acc_attivo/(self.time_end-self.time_start))*100)
             valori["total_act"]=self.acc_attivo
             valori["total_noact"]=self.acc_nonattivo
@@ -397,7 +428,7 @@ class NODO():
             valori["giorno"]=giorno
             valori["mese"]=mese
             valori["anno"]=anno
-#           valori["ora"]=t[3]
+#            valori["ora"]=t[3]
             if (debug):
                 print valori
             if (ping_db.reopenDB("ninux_rate")):
@@ -406,11 +437,11 @@ class NODO():
             self.stato="NonAttivo"
             if (self.me["attivo"]):
                 self.stato="Attivo" 
-#           log.add_node_report(self.me["nome"],self.me["ip_wifi"],str(int(self.acc_bin)),str(int(self.acc_bout)),str(int((self.acc_attivo/86400.0)*100))+"%",self.stato,self.me["contatto"])
+#            log.add_node_report(self.me["nome"],self.me["ip_wifi"],str(int(self.acc_bin)),str(int(self.acc_bout)),str(int((self.acc_attivo/86400.0)*100))+"%",self.stato,self.me["contatto"])
             log.add_node_report(self.me["nome"],self.me["ip_wifi"],"%3.2f"%(((self.acc_bin)/1048576.0)),"%3.2f"%(self.acc_bout/1045576.0),str(valori["activity"])+"%",self.stato,self.me["contatto"])
             self.acc_bin=0
             self.acc_bout=0
-            self.acc_attivo=0   
+            self.acc_attivo=0    
             self.acc_noattivo=0
             self.time_start=time.time()
         elif (time.strftime("%H") > "00"):
@@ -418,9 +449,9 @@ class NODO():
 #============================================================================
 #============================================================================
 # Invia una mail di alert per cambio di stato : 
-#           da           "Attivo"     ====> "Non attivo"
+#            da           "Attivo"     ====> "Non attivo"
 # oppure 
-#           da           "Non Attivo" ====> "Attivo" 
+#             da           "Non Attivo" ====> "Attivo" 
 #============================================================================
     def alert (self,stato):
         if (self.me["mail"] == "hown"):
@@ -432,7 +463,7 @@ class NODO():
             self.server.sendmail(self.sender,self.me["contatto"],self.messaggio)
             self.server.quit()
         log.event_log ("["+time.strftime("%c")+"] "+"Alert :"+self.me["nome"]+" " +self.me["ip_wifi"]+" il nodo risulta "+stato+"\n")
-#       print "["+time.strftime("%c")+"] "+"Inviato Alert :"+self.me["nome"]+" " +self.me["ip_wifi"]+" il nodo risulta "+stato+"\n"
+#        print "["+time.strftime("%c")+"] "+"Inviato Alert :"+self.me["nome"]+" " +self.me["ip_wifi"]+" il nodo risulta "+stato+"\n"
 
 #============================================================================
 # Ripristina l'ultimo valore di sequence: 
@@ -442,7 +473,7 @@ class NODO():
             condizione='id_nodo='+str(self.me["ID"])+' and id=(select max(id) from dati where id_nodo='+str(self.me["ID"])+")"
             r=ping_db.estrai_record("dati",["sequence","ID"],condizione)
             ping_db.closeDB()
-##          print r
+##            print r
             if (r):
                 return (r[0]["sequence"])
             else:
@@ -467,15 +498,14 @@ class DB :
 # L'utente
 # La password
 #============================================================================
-    def __init__(self, host, user, passw, logobj, olsr_url, debug=0):
-        self.host = host
-        self.user = user
-        self.passw = passw
-        self.open = 0
-        self.log = logobj
-        self.olsr_url = olsr_url
+    def __init__ (self,host,user,passw,logobj, debug=0):
+        self.host=host
+        self.user=user
+        self.passw=passw
+        self.open=0
+        self.log=logobj
         if (debug):
-            print self.host, self.passw, self.user
+            print self.host,self.passw,self.user
 #============================================================================
 #============================================================================
 #  Connessione allo Schema di riferimento
@@ -488,7 +518,7 @@ class DB :
             self.db= mdb.connect(host = self.host, user = self.user, passwd = self.passw, db = schema)
         except mdb.Error, e:
             self.log.event_log("Errore di Connessione DB")
-#           print "Errore di Connessione DB"
+#            print "Errore di Connessione DB"
             return (0)
         finally:
             self.tables=[]
@@ -499,13 +529,13 @@ class DB :
             if (debug):
                 print self.tables
             for t in self.tables:
-#               self.queryDB("show columns from "+t[0])
+#                self.queryDB("show columns from "+t[0])
                 self.queryDB("show columns from %s" % t[0])
                 cs=self.cur.fetchall()
                 cc=[]
                 for c in cs:
                     cc.append(c[0])
-                self.colonne[t[0]]=cc   #dizionario key=tabella valore = [col1,col2...,coln]
+                self.colonne[t[0]]=cc     #dizionario key=tabella valore = [col1,col2...,coln]
                 if (debug):
                     print self.colonne 
             return (1)
@@ -515,7 +545,7 @@ class DB :
             try:
                 self.db= mdb.connect(host = self.host, user = self.user, passwd = self.passw, db = schema)
             except mdb.Error, e:
-#               print "Errore di Connessione DB"
+#                print "Errore di Connessione DB"
                 self.log.event_log("Errore di Riconnessione DB")
                 return (0)
             finally:
@@ -556,7 +586,7 @@ class DB :
             query="select count(*) from %s " %(tabella)
         else:
             query="select count(*) from %s where %s " %(tabella, condizione)
-        if (not self.queryDB(query,debug)):
+        if (not self.queryDB(query)):
             return(self.cur.fetchall()[0][0])
         else:
             return -1
@@ -589,7 +619,7 @@ class DB :
 #============================================================================
 
 #============================================================================
-# Al momento non utilizata
+# Al momento non utilizzata
 #============================================================================
     def roolbackDB(self):
         self.db.rollback()
@@ -599,9 +629,9 @@ class DB :
 #============================================================================
 # La funzione esegue una ricerca nei record di una tabella
 #  tabella : Tabella di ricerca
-#   colonne : colonne della tabella da estrarre (default tutte : *)
-#   condizione : stringa delle condizioni (filtro)  di estrazione in stile SQL 
-#           Esempio : "if_wifi='10.150.28.5' and if_man ='172.19.177.1'"
+#    colonne : colonne della tabella da estrarre (default tutte : *)
+#    condizione : stringa delle condizioni (filtro)  di estrazione in stile SQL 
+#            Esempio : "if_wifi='10.150.28.5' and if_man ='172.19.177.1'"
 # Ritorna un array di dizionario le cui chiavi sono i nomi delle colonne della tabella
 # Rtorna una lista vuota se non ci sono record che soddisfano le condizioni
 # Ritorna  -1 se Data Base non connesso o la sintassi non e' corretta
@@ -613,7 +643,7 @@ class DB :
         if self.open :
             for c in colonne:
                 query = query +c+", "
-            query=query[:len(query)-2]      #togliere l'ultima virgola
+            query=query[:len(query)-2]         #togliere l'ultima virgola
             query=query+" from "+tabella
             if (condizione !=''):
                 query=query+ " where "+ condizione
@@ -627,7 +657,7 @@ class DB :
                         ret[colonne[i]]=r
                         i=i+1
                     if (debug):
-                        print ret   
+                        print ret    
                     retval.append(ret)
                     ret={}
                 if (debug):
@@ -653,24 +683,23 @@ class DB :
                 if (debug):
                     print v
                 query= query + v+ " ,"
-            query=query[:len(query)-2]      #togliere l'ultima virgola
+            query=query[:len(query)-2]         #togliere l'ultima virgola
             query =query +" ) VALUES ("
             for v in valori.values() :
                 if (isinstance(v,str)):
                     query=query +"'"+ v + "' ,"
                 else:
                     query=query +str(v)+ " ,"
-            query=query[:len(query)-2]      #togliere l'ultima virgola
+            query=query[:len(query)-2]         #togliere l'ultima virgola
             query =query + ")"
             if (debug):
                 print query
-            return (self.queryDB(query,debug))
+            return (self.queryDB(query))
 #============================================================================
-
 #============================================================================
 # Aggiorna  i valori di un record esistente
 # della Tabella "tabella"
-#  i valori da sostituire sono dischirati in un dizionario
+#  i valori da sostituire sono dischiarati in un dizionario
 # {'nome_colonna1': Valore,......,nome_colonnaN': Valore}
 #
 #  Ritorna 0 se il record e' inserito correttamente
@@ -684,33 +713,107 @@ class DB :
                     query=query + v +" = '"+ valori[v]+"', "
                 else:
                     query=query + v +" = "+ valori[v]+", "
-            query=query[:len(query)-2]      #togliere l'ultima virgola
+            query=query[:len(query)-2]         #togliere l'ultima virgola
             if (len(condizione)):
                 query=query + " WHERE "+ condizione
             if (debug):
                 print query
-            return (self.queryDB(query),debug)
+            return (self.queryDB(query))
+#============================================================================
+#============================================================================
+#============================================================================
+# Elimina i record 
+# della Tabella "tabella"
+#  che soddisfano la Condizione 'condizione'
+#
+#  Ritorna 0 se il record e' inserito correttamente
+#  Ritorna -1 se non aggiornato o la sintassi non e' corretta
+#============================================================================
+    def delete_record (self,tabella,condizione ,debug = 0 ):
+        if(self.open):
+            query = "DELETE FROM "+tabella+" SET "
+            for v in valori.keys():
+                if (isinstance(valori[v],str)):
+                    query=query + v +" = '"+ valori[v]+"', "
+                else:
+                    query=query + v +" = "+ valori[v]+", "
+            query=query[:len(query)-2]         #togliere l'ultima virgola
+            query=query + " WHERE "+ condizione
+            if (debug):
+                print query
+            return (self.queryDB(query))
+#============================================================================
+#============================================================================
+#============================================================================
+#============================================================================
+#            Fine DB class
+#============================================================================
+#============================================================================
+#============================================================================
+class olsr_graph():
 
-    def refresh_alias_table(self):
-        newaliases = olsr_graph(self.olsr_url)
-        self.invert_repo = newaliases.get_mid()
-        main_IP = newaliases.get_config()
-        self.invert_repo[main_IP] = [i for i in newaliases.get_interfaces() if i != main_IP]
-        print invert_repo
+    def __init__(self, json_url):
+        self.json_url = json_url
+        # FIXME check return value here
+        self.curl = spawn.find_executable("curl")
 
+    def get_or_curl(self, url):
+        resp = urllib2.urlopen(url)
+        try:
+            s = resp.read()
+        except socket.error:
+            temp_file = "/tmp/netping_tmp_" + str(int(time.time()))
+            curl_string = self.curl + " " + url + " -o " + temp_file
+            os.popen(curl_string)
+            f = open(temp_file, "r")
+            s = f.read()
+            f.close()
+        return s
 
-#============================================================================
-#============================================================================
-#           Fine DB class
-#============================================================================
-#============================================================================
-#============================================================================
-#============================================================================
-#============================================================================
-#============================================================================
-#============================================================================
-#============================================================================
+    def get_mid(self):
+        mid_url = self.json_url + "/mid"
+        resp = urllib2.urlopen(mid_url)
+        f = resp.read()
+        f_json = json.loads(f)
+        # invert_repo maps a secondari interface IP to a primary one
+        invert_repo = {}
+        for address in f_json["mid"]:
+            invert_repo[address["ipAddress"]] = []
+            for aliases in address["aliases"]:
+                invert_repo[address["ipAddress"]].append(aliases["ipAddress"])
+        return invert_repo
 
+    def get_config(self):
+        conf_url = self.json_url + "/conf"
+        resp = urllib2.urlopen(conf_url)
+        f = resp.read()
+        f_json = json.loads(f)
+        main_IP = f_json["config"]["mainIpAddress"]
+        return main_IP
+
+    def get_interfaces(self):
+        """ OLSR plugins returns a wrong JSON, without
+        the opening bracket """
+        intf_url = self.json_url + "/interfaces"
+        f = self.get_or_curl(intf_url)
+        try:
+            f_json = json.loads(f)
+        except ValueError:
+            patched_f = "{" + f
+            f_json = json.loads(patched_f)
+        all_addresses = []
+        for intf in f_json["interfaces"]:
+            all_addresses.append(intf["ipv4Address"])
+        return all_addresses
+
+    def usage(self):
+        print "./netpin.py jsonplugin_url"
+        print "ex: ./netping.py http://localhost:9090/"
+#============================================================================
+#============================================================================
+#============================================================================
+#============================================================================
+#============================================================================
 #============================================================================
 # Program Main 
 #============================================================================
@@ -730,9 +833,9 @@ if not(c.read("netping.config")): #il file esiste ?
 sections=c.sections()
 for section in sections:
     for option in c.options(section):
-#       print option,"="
+#        print option,"="
         exec  option+"="+'c.get(section,option)'
-#       exec 'print option, "=",c.get(section,option)'
+#        exec 'print option, "=",c.get(section,option)'
 if not('pathnome_log' in globals()):
     print "Config File is not correct: 'pathnome_log' not exist"
     exit(-1)
@@ -751,8 +854,8 @@ elif not('password' in globals()):
 elif not('schemadb' in globals()):
     print "Config File is not correct : 'schemadb' not exist "
     exit(-1)
-elif not('olsr_url' in globals()):
-    print "Config File is not correct : 'olsr_url' not exist "
+elif not('urlj' in globals()):
+    print "Config File is not correct : 'url' not exist "
     exit(-1)
 #============================================================================
 #============================================================================
@@ -763,6 +866,7 @@ ping_db = DB (databasehost,user,password,log) ## Istanzia il Data Base Client
 if ping_db.openDB(schemadb) :               ## Apre la connessione al Data Base
     tutti_nodi = ping_db.estrai_record("nodi") # Estrae tutti i nodi
     ping_db.closeDB()
+mainmap = olsr_graph(urlj)
 i=0
 id_max=0
 for s in tutti_nodi:
@@ -775,13 +879,21 @@ for s in tutti_nodi:
 #try:
 while 1:
     twait=3600/len(tutti_nodi)
+#=========================================================
+# associazione per ogni nodo ipmain e aliases
+#=========================================================
+    invert_repo = mainmap.get_mid()
+    main_IP = mainmap.get_config()
+    invert_repo[main_IP] = [i for i in mainmap.get_interfaces() if i != main_IP]
+    for e in invert_repo.keys():
+        log.event_log("[%s] ipmain ==> %s  aliases : " %(time.strftime("%c"),e))
+        for a in invert_repo[e]:
+            log.event_log("%s - " %(a))
+        log.event_log("\n")
+#=========================================================
     for s in tutti_nodi:
-#       print time.strftime("%a %b %d %H:%M:%S %Y")
         s.run()
-#       print "wait for ",twait,"s"
         time.sleep(twait)  # pause di (1 ora / numero di nodi)
-#       time.sleep(5)
-#   print time.strftime("%a %b %d %H:%M:%S %Y"), "   altro giro"#
 #============================================================================
 #  Verifica se sono stati aggiunti altri nodi
 #============================================================================
@@ -792,18 +904,20 @@ while 1:
             ping_db.closeDB()
             for s in nuovi_nodi:
                 if s["ID"] > id_max :
-                    id_max=s["ID"]
+                    id_max = s["ID"]
                 tutti_nodi.append(NODO(s,log))
                 log.event_log("[%s] Aggiunto nodo %s@%s" %(time.strftime("%c"),s["nome"],s["ip"]))
                 log.event_log("[%s] %s %s %s %s %s %d\n" %(time.strftime("%c"),s["nome"],s["ip"],s["contattomail"]," - ","attivo = ",s["attivo"]))
-#       elif (n-len(tutti_nodi))==0:
-#           print "Nessun nodo aggiunto"
-#       else :
-#           print "Nessun nodo eliminato"
+#============================================================================
+#  Inizializza tabella degli ip aliases 
+#============================================================================
+#        ping_db.delete_record("aliases","valid=0")
+#        v={}
+#        v['valid']=0
+#        ping_db.update_record("aliases",v)
         ping_db.closeDB()
-#   time.sleep(300)  # pause per 1 ora
 #except:
-#   log.event_log ( "Errore inatteso :  %s \n "%(sys.exc_info()[0]))        
+#    log.event_log ( "Errore inatteso :  %s \n "%(sys.exc_info()[0]))        
     
     
     

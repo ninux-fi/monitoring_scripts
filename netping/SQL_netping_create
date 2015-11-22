@@ -1,0 +1,80 @@
+-----------------------------------------------------------------------
+              Creazione DatBase net_ping
+-----------------------------------------------------------------------
+CREATE DATABASE `net_ping` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+-----------------------------------------------------------------------
+              Creazione Tabella dati
+-----------------------------------------------------------------------
+DROP TABLE IF EXISTS `net_ping`.`dati`;
+CREATE TABLE  `net_ping`.`dati` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `id_nodo` int(11) DEFAULT NULL,
+  `ip_sorg` char(15) NOT NULL,
+  `ip_dest` char(15) NOT NULL,
+  `min` float NOT NULL,
+  `avg` float NOT NULL,
+  `max` float NOT NULL,
+  `giorno` varchar(2) NOT NULL,
+  `mese` varchar(4) NOT NULL,
+  `anno` varchar(4) NOT NULL,
+  `ora_locale` varchar(8) NOT NULL,
+  `ora_remota` varchar(8) NOT NULL,
+  `data_remota` varchar(10) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=2192826 DEFAULT CHARSET=latin1;
+-------------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+              Creazione Tabella nodi
+-----------------------------------------------------------------------
+DROP TABLE IF EXISTS `net_ping`.`nodi`;
+CREATE TABLE  `net_ping`.`nodi` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `nome` varchar(30) NOT NULL,
+  `location` varchar(30) DEFAULT NULL,
+  `ip` char(15) NOT NULL,
+  `url` varchar(50) NOT NULL,
+  `creato` varchar(20) NOT NULL,
+  `attivo` tinyint(1) NOT NULL DEFAULT '0',
+  `registrato` tinyint(1) NOT NULL DEFAULT '0',
+  `contattomail` varchar(50) NOT NULL,
+  `fetch_url` varchar(255) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `fetch_url_UNIQUE` (`fetch_url`)
+) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+
+-----------------------------------------------------------------------
+              Creazione Tabella ipmain
+-----------------------------------------------------------------------
+CREATE TABLE `ipmain` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` char(15) NOT NULL,
+  `aliases` varchar(255) DEFAULT NULL,
+  `id_nodo` int(11) NOT NULL,
+  `ora_remota` char(5) NOT NULL,
+  `data_remota` char(10) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-----------------------------------------------------------------------
+              Creazione Vista  dati_giornalieri
+-----------------------------------------------------------------------
+DROP VIEW IF EXISTS `net_ping`.`dati_giornalieri`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`ninux`@`172.16.1.15` SQL SECURITY DEFINER VIEW  `net_ping`.`dati_giornalieri` AS select `dati`.`id_nodo` AS 
+`id_nodo`,`dati`.`ip_sorg` AS `ip_sorg`,`dati`.`ip_dest` AS `ip_dest`,avg(`dati`.`min`) AS `min`,avg(`dati`.`avg`) AS `avg`,
+avg(`dati`.`max`) AS `max`,`dati`.`giorno` AS `giorno`,`dati`.`mese` AS `mese`,`dati`.`anno` 
+AS `anno` from `dati` group by `dati`.`ip_sorg`,`dati`.`ip_dest`,`dati`.`anno`,`dati`.`mese`,`dati`.`giorno` order by `dati`.`data_remota`;
+-----------------------------------------------------------------------
+              Creazione Vista  dati_mensili
+-----------------------------------------------------------------------
+DROP VIEW IF EXISTS `net_ping`.`dati_mensili`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`ninux`@`172.16.1.15` SQL SECURITY DEFINER VIEW  `net_ping`.`dati_mensili` AS select `dati`.`id_nodo` AS
+ `id_nodo`,`dati`.`ip_sorg` AS `ip_sorg`,`dati`.`ip_dest` AS `ip_dest`,avg(`dati`.`min`) AS `min`,avg(`dati`.`avg`) AS `avg`,
+ avg(`dati`.`max`) AS `max`,`dati`.`mese` AS `mese`,`dati`.`anno` 
+ AS `anno` from `dati` group by `dati`.`ip_sorg`,`dati`.`ip_dest`,`dati`.`anno`,`dati`.`mese` order by `dati`.`data_remota`;
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+ 
+ 
+ 
